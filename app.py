@@ -11,7 +11,6 @@ if sys.platform == "win32":
     sys.modules["grp"] = MagicMock()
 
 # ✅ Correct import for Pydantic v2
-from pydantic import BaseModel  
 
 # Continue with LangChain imports after fixing pwd issue
 from langchain.text_splitter import RecursiveCharacterTextSplitter
