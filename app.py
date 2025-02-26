@@ -3,16 +3,10 @@ import sys
 import shutil
 import uuid
 import streamlit as st
+from fastapi import FastAPI, UploadFile, File
+from starlette.middleware.wsgi import WSGIMiddleware
+from dotenv import load_dotenv
 from unittest.mock import MagicMock
-
-# 🛠️ Fix the 'pwd' module issue on Windows
-if sys.platform == "win32":
-    sys.modules["pwd"] = MagicMock()
-    sys.modules["grp"] = MagicMock()
-
-# ✅ Correct import for Pydantic v2
-
-# Continue with LangChain imports after fixing pwd issue
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
@@ -21,11 +15,17 @@ from langchain_community.vectorstores import Pinecone as VectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import RetrievalQA
 
+# Mock 'pwd' and 'grp' to avoid import errors on Windows
+sys.modules["pwd"] = MagicMock()
+sys.modules["grp"] = MagicMock()
 
 # Load environment variables
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+
+# Initialize FastAPI
+app = FastAPI()
 
 # Initialize Pinecone
 pc = PineconeClient(api_key=PINECONE_API_KEY)
@@ -100,7 +100,7 @@ if user_input:
         st.markdown(user_input)
 
     # Process query
-    retriever = VectorStore.from_existing_index(index_name, embeddings).as_retriever()
+    retriever = VectorStore(index_name=index_name, embedding_function=embeddings).as_retriever()
     qa_chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
     response = qa_chain({"query": user_input})["result"]
 
@@ -112,5 +112,7 @@ if user_input:
     st.session_state["messages"].append({"role": "user", "content": user_input})
     st.session_state["messages"].append({"role": "assistant", "content": response})
 
-
-
+# Mount FastAPI inside Streamlit
+@st.cache_resource
+def get_app():
+    return app
