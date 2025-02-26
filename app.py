@@ -3,7 +3,6 @@ import sys
 import shutil
 import uuid
 import streamlit as st
-from fastapi import FastAPI, UploadFile, File
 from starlette.middleware.wsgi import WSGIMiddleware
 from dotenv import load_dotenv
 from unittest.mock import MagicMock
@@ -30,9 +29,6 @@ from langchain.chains import RetrievalQA
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-
-# Initialize FastAPI
-app = FastAPI()
 
 # Initialize Pinecone
 pc = PineconeClient(api_key=PINECONE_API_KEY)
@@ -119,8 +115,5 @@ if user_input:
     st.session_state["messages"].append({"role": "user", "content": user_input})
     st.session_state["messages"].append({"role": "assistant", "content": response})
 
-# Mount FastAPI inside Streamlit
-@st.cache_resource
-def get_app():
-    return app
+
 
