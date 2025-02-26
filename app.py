@@ -2,7 +2,6 @@ import os
 import sys
 import shutil
 import uuid
-import fitz  # PyMuPDF
 import streamlit as st
 from fastapi import FastAPI, UploadFile, File
 from starlette.middleware.wsgi import WSGIMiddleware
