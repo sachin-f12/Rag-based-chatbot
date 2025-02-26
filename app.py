@@ -100,7 +100,8 @@ if user_input:
         st.markdown(user_input)
 
     # Process query
-    retriever = VectorStore(index_name=index_name, embedding_function=embeddings).as_retriever()
+    retriever = VectorStore.from_existing_index(index_name, embeddings).as_retriever()
+
     qa_chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
     response = qa_chain({"query": user_input})["result"]
 
