@@ -3,7 +3,6 @@ import sys
 import shutil
 import uuid
 import streamlit as st
-from dotenv import load_dotenv
 from unittest.mock import MagicMock
 
 # 🛠️ Fix the 'pwd' module issue on Windows
