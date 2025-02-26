@@ -1,0 +1,33 @@
+# Ignore Python virtual environments
+venv/
+rag_chatbot/
+
+# Ignore environment variables and secrets
+.env
+*.env
+secrets.toml
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore logs and temp files
+logs/
+*.log
+temp_*.pdf
+*.tmp
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Jupyter Notebook checkpoints (if used)
+.ipynb_checkpoints/
+
+# Ignore Streamlit static files (if needed)
+.streamlit/
+
+# Ignore VS Code and PyCharm settings (optional)
+.vscode/
+.idea/
