@@ -3,8 +3,6 @@ import sys
 import shutil
 import uuid
 import streamlit as st
-from starlette.middleware.wsgi import WSGIMiddleware
-from dotenv import load_dotenv
 from unittest.mock import MagicMock
 
 # 🛠️ Fix the 'pwd' module issue on Windows
@@ -13,7 +11,6 @@ if sys.platform == "win32":
     sys.modules["grp"] = MagicMock()
 
 # ✅ Correct import for Pydantic v2
-from pydantic import BaseModel  
 
 # Continue with LangChain imports after fixing pwd issue
 from langchain.text_splitter import RecursiveCharacterTextSplitter
